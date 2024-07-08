@@ -37,4 +37,4 @@ app.include_router(logisticRegressionRouter)
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=33333) # 127.0.0.1 -> 자기 ipv4 주소로 변경
+    uvicorn.run(app, host="localhost", port=33333) # 127.0.0.1 -> 자기 ipv4 주소로 변경
