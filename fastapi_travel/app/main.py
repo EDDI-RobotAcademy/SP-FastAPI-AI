@@ -4,9 +4,11 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
 from travel_orders_analysis.controller.travel_orders_analysis_controller import travelOrdersAnalysisRouter
 
 app = FastAPI()
+
 
 # .env 세팅
 load_dotenv()
@@ -31,6 +33,7 @@ def read_item(item_id: int, q: str = None):
     return {"item_id": item_id, "q": q}
 
 app.include_router(travelOrdersAnalysisRouter)
+app.include_router(logisticRegressionRouter)
 
 if __name__ == "__main__":
     import uvicorn
