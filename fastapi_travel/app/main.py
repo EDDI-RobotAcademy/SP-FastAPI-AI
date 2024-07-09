@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
+from random_forest.controller.random_forest_controller import randomForestRouter
 from travel_orders_analysis.controller.travel_orders_analysis_controller import travelOrdersAnalysisRouter
 
 app = FastAPI()
@@ -34,6 +35,7 @@ def read_item(item_id: int, q: str = None):
 
 app.include_router(travelOrdersAnalysisRouter)
 app.include_router(logisticRegressionRouter)
+app.include_router(randomForestRouter)
 
 if __name__ == "__main__":
     import uvicorn
