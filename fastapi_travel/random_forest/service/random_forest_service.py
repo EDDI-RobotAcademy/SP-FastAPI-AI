@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 class RandomForestService(ABC):
     @abstractmethod
-    def readExcel(self):
+    def readCsv(self):
         pass
 
     @abstractmethod
