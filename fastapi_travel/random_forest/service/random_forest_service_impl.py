@@ -40,6 +40,17 @@ class RandomForestServiceImpl(RandomForestService):
         y_pred = self.__randomForestRepository.predict(randomForestModel, X_test)
         accuracy, report, confusionMatrix = (self.__randomForestRepository.evaluate(y_test, y_pred))
 
+        X_resampled, y_resampled = self.__randomForestRepository.applySmote(X_train, y_train)
+        randomForestModelAfterSmote = self.__randomForestRepository.train(X_resampled, y_resampled)
+        y_pred_after_smote = (
+            self.__randomForestRepository.predict(randomForestModelAfterSmote, X_test))
+
+        moteAccuracy, smoteReport, smoteConfusionMatrix = (
+            self.__randomForestRepository.evaluate(y_test, y_pred_after_smote))
+
+
+
+
         return RandomForestResponseForm.createForm(
-            confusionMatrix, y_test, y_pred, dataFrame
+            confusionMatrix,smoteConfusionMatrix, y_test, y_pred,  y_pred_after_smote, dataFrame,
         )
