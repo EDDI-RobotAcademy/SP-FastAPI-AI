@@ -1,14 +1,15 @@
 class RandomForestResponseForm:
     @staticmethod
-    def createForm(confusionMatrix, smoteConfusionMatrix, y_test, y_pred, y_pred_after_smote, data):
+    def createForm(confusionMatrix, smoteConfusionMatrix, y_test, y_pred, y_pred_after_smote, dataFrame):
         common_info = {
-            "t_age": data[['age', 'travelId']].to_dict(orient='records'),
-            't_gender': data[['gender', 'travelId']].to_dict(orient='records'),
-            't_travelConcept': data[['travelConcept', 'travelId']].to_dict(orient='records'),
-            't_travelCompanion': data[['travelCompanion', 'travelId']].to_dict(orient='records'),
-            't_snsFrequency': data[['snsFrequency', 'travelId']].to_dict(orient='records'),
-            't_photoFrequency': data[['photoFrequency', 'travelId']].to_dict(orient='records'),
-            't_travelBudget': data[['travelBudget', 'travelId']].to_dict(orient='records')
+            "t_age": dataFrame[['age', 'travelId']].to_dict(orient='records'),
+            't_gender': dataFrame[['gender', 'travelId']].to_dict(orient='records'),
+            't_price' : dataFrame[['price', 'travelId']].to_dict(orient='records'),
+            't_travelConcept': dataFrame[['travelConcept', 'travelId']].to_dict(orient='records'),
+            't_travelCompanion': dataFrame[['travelCompanion', 'travelId']].to_dict(orient='records'),
+            't_snsFrequency': dataFrame[['snsFrequency', 'travelId']].to_dict(orient='records'),
+            't_photoFrequency': dataFrame[['photoFrequency', 'travelId']].to_dict(orient='records'),
+            't_travelBudget': dataFrame[['travelBudget', 'travelId']].to_dict(orient='records')
         }
 
         y_test_list = y_test.tolist()
