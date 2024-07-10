@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 logisticRegressionRouter = APIRouter()
 
@@ -21,18 +22,29 @@ async def logistic_regression_test():
 
     print("logistic_regression_test()")
 
-    df_1 = pd.read_excel(f'{filePath}/survey_data.xlsx')
-    df_2 = pd.read_excel(f'{filePath}/travel_orders_data.xlsx')
+    data= pd.read_excel(f'{filePath}/orders_data_after_drop_duplication.xlsx')
+    df = pd.DataFrame(data)
+    df = df.drop_duplicates(subset='accountId')
+    df = df[df['accountId'] < 200]
+    # df = df.sample(n=00, random_state=1)
 
-    merged_df = pd.merge(df_1, df_2, on='accountId')
-    merged_df = merged_df.drop_duplicates(subset=['accountId', 'travelId'])
+    df['y'] = (df['travelBudget'] >= 5).astype(int)
+    df['x'] = (df['price'] >= 1000000).astype(int)
 
-    print(merged_df)
+    X= df[['accountId','age', 'price', 'x']]
+    y = df['y']
 
-    X = merged_df.drop('travelId', axis=1)
-    y =merged_df['travelId']
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+
+
+    print(df['y'].value_counts())
+    X_df = X.copy()
+
+    scaler = StandardScaler()
+    X_standardized = scaler.fit_transform(X)
+
+
+    X_train, X_test, y_train, y_test = train_test_split(X_standardized, y, test_size=0.3, random_state=0)
 
     model = LogisticRegression()
     model.fit(X_train, y_train)
@@ -44,8 +56,11 @@ async def logistic_regression_test():
     coef = model.coef_
     intercept = model.intercept_
 
-    x_values = np.linspace(X.iloc[:, 0].min(), X.iloc[:, 0].max(), 100)
+    x_values = np.linspace(X_df.iloc[:, 0].min(), X_df.iloc[:, 0].max(), 100)
     y_values = -(coef[0][0] * x_values + intercept[0] / coef[0][1])
+
+    print(y_values)
+
 
     return JSONResponse(content={
         "accuracy": accuracy,
