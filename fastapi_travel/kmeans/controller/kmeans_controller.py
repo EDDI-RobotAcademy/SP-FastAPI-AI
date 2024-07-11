@@ -15,17 +15,17 @@ async def kmeans_cluster_analysis():
     print(f"currentDirectory: {currentDirectory}")
 
     filePath = os.path.join(
-        currentDirectory, "..", "assets", "preprocessed_orders_data.xlsx"
+        currentDirectory, "..", "assets", "orders_data_after_drop_duplication.xlsx"
     )
 
     df = pd.read_excel(filePath)
 
-    data = df[['travelConcept', 'travelId']]
+    data = df[[ 'age', 'travelConcept', 'travelCompanion', 'snsFrequency', 'photoFrequency', 'travelBudget' ]]
 
     scaler = StandardScaler()
     data_scaled = scaler.fit_transform(data)
 
-    kmeans = KMeans(n_clusters=4, n_init=10)
+    kmeans = KMeans(n_clusters=5, n_init=40)
     kmeans.fit(data_scaled)
 
     labels = kmeans.labels_.tolist()
